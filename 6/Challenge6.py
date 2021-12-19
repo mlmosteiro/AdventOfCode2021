@@ -9,12 +9,14 @@ def parseInputToMatrix():
 
     return result
 
+
 def getMostCommonValueInColumn(matrix, col):
     column = []
     for row in range(len(matrix)):
         column.append(matrix[row][col])
 
     return 1 if column.count(1) >= column.count(0) else 0
+
 
 def getLeastCommonValueInColumn(matrix, col):
     column = []
@@ -23,6 +25,7 @@ def getLeastCommonValueInColumn(matrix, col):
 
     return 0 if column.count(0) <= column.count(1) else 1
 
+
 def filterRowsByValueInIndex(matrix, value, index):
     result = []
     for row in matrix:
@@ -30,9 +33,11 @@ def filterRowsByValueInIndex(matrix, value, index):
             result.append(row)
     return result
 
+
 def parseToDecimal(array):
     string_ints = [str(int) for int in array]
     return int("".join(string_ints), 2)
+
 
 def getFilteredMatrixByMostCommonValueInColumn(matrix, column):
     if len(matrix) == 1:
@@ -42,6 +47,7 @@ def getFilteredMatrixByMostCommonValueInColumn(matrix, column):
     newMatrix = filterRowsByValueInIndex(matrix, commonValue, column)
     return getFilteredMatrixByMostCommonValueInColumn(newMatrix, column + 1)
 
+
 def getFilteredMatrixByLeastCommonValueInColumn(matrix, column):
     if len(matrix) == 1:
         return matrix[0]
@@ -49,6 +55,7 @@ def getFilteredMatrixByLeastCommonValueInColumn(matrix, column):
     leastCommonValue = getLeastCommonValueInColumn(matrix, column)
     newMatrix = filterRowsByValueInIndex(matrix, leastCommonValue, column)
     return getFilteredMatrixByLeastCommonValueInColumn(newMatrix, column + 1)
+
 
 def main():
     matrix = parseInputToMatrix()
@@ -60,5 +67,6 @@ def main():
     epsilon = parseToDecimal(co2ScrubberRating)
 
     print(gamma * epsilon)
+
 
 main()

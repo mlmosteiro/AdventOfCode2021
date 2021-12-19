@@ -1,11 +1,12 @@
-# abrir y leer archivo
 def parseInput():
-  with open('input.txt', 'r') as f:
-    content = f.read()
-  return content.split('\n')
+    with open("input.txt", "r") as f:
+        content = f.read()
+    return content.split("\n")
+
 
 def addThree(start, list):
-    return list[start] + list[start+1] + list[start+2]
+    return list[start] + list[start + 1] + list[start + 2]
+
 
 def main():
     list_numbers = parseInput()
@@ -13,7 +14,7 @@ def main():
 
     greaters = 0
 
-    for i in range (len(list_numbers)-3):
+    for i in range(len(list_numbers) - 3):
         j = i + 1
         firstSet = addThree(i, list_numbers)
         nextSet = addThree(j, list_numbers)
@@ -21,5 +22,6 @@ def main():
         if firstSet < nextSet:
             greaters += 1
     print(greaters)
+
 
 main()
