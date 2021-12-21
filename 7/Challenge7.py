@@ -51,13 +51,13 @@ def checkHoizontalBingo(board):
 
     while len(winningRow) < matrixOrder and checkedRow < matrixOrder:
         number = getNumberByIndex(board, index)
-        if index < matrixOrder and board[number]:
+        if len(winningRow) < matrixOrder and board[number]:
             winningRow.append(number)
             index += 1
         else:
             winningRow = []
             checkedRow += 1
-            index = checkedRow + 1 * matrixOrder
+            index = checkedRow * matrixOrder
 
     return len(winningRow) == matrixOrder
 
