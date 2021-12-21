@@ -17,21 +17,18 @@ def parseBingoBoards():
     with open(FILE_NAME, "r") as f:
         content = f.read()
         lines = content.split("\n")
-        lines.pop(0)  ## quitamos la primera línea de números
-        lines.pop(0)  ## quitamos el salto de línea
+        lines.pop(0)  # quitamos la primera línea de números
 
         board = {}
         for line in lines:
-            if line == "":
+            if line != "":
+                boardLine = line.split(" ")
+                for number in boardLine:
+                    if number != "":
+                        board[int(number)] = False
+            elif board != {}:
                 boards.append(board)
                 board = {}
-                continue
-
-            boardLine = line.split(" ")
-            for number in boardLine:
-                if number != "":
-                    board[int(number)] = False
-
         boards.append(board)
     return boards
 
@@ -42,44 +39,47 @@ def markNumberInBoards(boards, number):
             board[number] = True
 
 
-def checkHoizontalBingo(board):
-    columns = int(math.sqrt(len(board)))
-    row = []
-    index = 0
-    rowNumber = 1
+def getNumberByIndex(board, index):
+    return list(board.keys())[index]
 
-    while len(row) < columns and rowNumber < columns:
-        number = list(board.keys())[index]
-        if index < columns and board[number]:
-            row.append(number)
+
+def checkHoizontalBingo(board):
+    matrixOrder = int(math.sqrt(len(board)))
+    winningRow = []
+    index = 0
+    checkedRow = 0
+
+    while len(winningRow) < matrixOrder and checkedRow < matrixOrder:
+        number = getNumberByIndex(board, index)
+        if index < matrixOrder and board[number]:
+            winningRow.append(number)
             index += 1
         else:
-            row = []
-            index = rowNumber * columns
-            rowNumber += 1
+            winningRow = []
+            checkedRow += 1
+            index = checkedRow + 1 * matrixOrder
 
-    return len(row) == columns
+    return len(winningRow) == matrixOrder
 
 
 def checkVerticalBingo(board):
-    columns = int(math.sqrt(len(board)))
-    rows = columns
+    matrixOrder = int(math.sqrt(len(board)))
 
-    column = []
+    winningColumn = []
     index = 0
-    columnNumber = 1
-    while len(column) < rows and columnNumber < columns and index < len(board):
+    checkedColumn = 0
 
-        number = list(board.keys())[index]
+    while len(winningColumn) < matrixOrder and checkedColumn < matrixOrder and index < len(board):
+        number = getNumberByIndex(board, index)
         if board[number]:
-            column.append(number)
-            index += columns
+            winningColumn.append(number)
+            index += matrixOrder
         else:
-            column = []
-            index = columnNumber
-            columnNumber += 1
+            winningColumn = []
+            checkedColumn += 1
+            index = checkedColumn
 
-    return len(column) == rows
+    return len(winningColumn) == matrixOrder
 
 
 def getBoardPoints(board, lastCalledNumber):
@@ -99,12 +99,7 @@ def main():
         markNumberInBoards(boards, number)
 
         for board in boards:
-            hasBingo = checkHoizontalBingo(board)
-            if hasBingo:
-                print(getBoardPoints(board, number))
-                return
-            hasBingo = checkVerticalBingo(board)
-            if hasBingo:
+            if checkHoizontalBingo(board) or checkVerticalBingo(board):
                 print(getBoardPoints(board, number))
                 return
 
